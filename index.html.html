@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Justice City RP | مدينة العدالة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#C0392B;--red2:#E74C3C;--red3:#ff4d3a;
+  --gold:#c9a84c;--gold2:#e8c97a;
+  --dark:#060809;--dark2:#0D0F12;--dark3:#111418;--dark4:#161B22;--dark5:#1a1f28;
+  --border:rgba(192,57,43,0.18);--border2:rgba(192,57,43,0.45);--border3:rgba(192,57,43,0.08);
+  --text:#EAE6DC;--muted:#7A7068;--muted2:#5a5450;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden}
+
+/* PAGES */
+.page{display:none;min-height:100vh;animation:pgIn .4s cubic-bezier(.16,1,.3,1)}
+.page.active{display:block}
+@keyframes pgIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* PARTICLES CANVAS */
+#particles-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:999;padding:0 4vw;transition:all .4s}
+nav.solid{background:rgba(6,8,9,.96);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.nav-inner{max-width:1280px;margin:auto;display:flex;align-items:center;justify-content:space-between;height:74px}
+.nav-brand{display:flex;align-items:center;gap:12px;cursor:pointer}
+.nav-brand img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid var(--border2);box-shadow:0 0 12px rgba(192,57,43,.3)}
+.nav-brand-name{font-family:'Tajawal',sans-serif;font-size:.9rem;font-weight:900;color:#fff;letter-spacing:2px;text-transform:uppercase}
+.nav-brand-sub{font-size:.6rem;color:var(--gold);letter-spacing:3px;display:block;margin-top:-2px}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{color:var(--muted);font-size:.82rem;font-weight:700;text-decoration:none;transition:color .2s;letter-spacing:1px;cursor:pointer;text-transform:uppercase;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;right:0;left:0;height:1px;background:var(--red2);transform:scaleX(0);transition:transform .25s;transform-origin:right}
+.nav-links a:hover{color:#fff}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-cta{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;font-size:.78rem;font-weight:700;padding:10px 24px;border-radius:3px;cursor:pointer;letter-spacing:2px;transition:all .25s;border:none;text-transform:uppercase;position:relative;overflow:hidden}
+.nav-cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--red2),var(--red3));opacity:0;transition:opacity .25s}
+.nav-cta:hover::before{opacity:1}
+.nav-cta span{position:relative;z-index:1}
+
+/* HERO */
+.hero{position:relative;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 2rem;overflow:hidden}
+.hero-video-bg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;opacity:.45}
+.hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,rgba(6,8,9,.2) 0%,rgba(6,8,9,.55) 50%,rgba(6,8,9,1) 100%)}
+.hero-overlay2{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(192,57,43,.04),transparent 70%)}
+.hero-grid-bg{position:absolute;inset:0;z-index:1;opacity:.03;background-image:linear-gradient(rgba(192,57,43,.8) 1px,transparent 1px),linear-gradient(90deg,rgba(192,57,43,.8) 1px,transparent 1px);background-size:70px 70px}
+.hero-scan{position:absolute;top:0;left:0;right:0;height:1px;z-index:2;background:linear-gradient(90deg,transparent 0%,rgba(192,57,43,.8) 50%,transparent 100%);animation:scan 6s ease-in-out infinite}
+@keyframes scan{0%{top:-2px;opacity:0}5%{opacity:1}95%{opacity:.5}100%{top:100%;opacity:0}}
+.hero-corner{position:absolute;z-index:2;width:60px;height:60px;opacity:.3}
+.hero-corner.tl{top:80px;right:20px;border-top:2px solid var(--red);border-right:2px solid var(--red)}
+.hero-corner.tr{top:80px;left:20px;border-top:2px solid var(--red);border-left:2px solid var(--red)}
+.hero-corner.bl{bottom:20px;right:20px;border-bottom:2px solid var(--red);border-right:2px solid var(--red)}
+.hero-corner.br{bottom:20px;left:20px;border-bottom:2px solid var(--red);border-left:2px solid var(--red)}
+
+.hero-content{position:relative;z-index:3}
+.hero-logo-wrap{position:relative;display:inline-block;margin-bottom:2.2rem}
+.hero-logo{width:170px;height:170px;border-radius:50%;object-fit:cover;border:2px solid rgba(192,57,43,.6);animation:pulse-ring 3s ease-in-out infinite;display:block;position:relative;z-index:2}
+.logo-ring{position:absolute;inset:-14px;border-radius:50%;border:1px solid rgba(192,57,43,.3);animation:spin-slow 22s linear infinite;pointer-events:none;z-index:1}
+.logo-ring::before,.logo-ring::after{content:'';position:absolute;border-radius:50%;background:var(--red)}
+.logo-ring::before{top:-5px;left:50%;width:9px;height:9px;transform:translateX(-50%)}
+.logo-ring::after{bottom:-5px;left:50%;width:5px;height:5px;transform:translateX(-50%);opacity:.5}
+.logo-ring2{position:absolute;inset:-28px;border-radius:50%;border:1px solid rgba(192,57,43,.12);animation:spin-slow 36s linear infinite reverse;pointer-events:none;z-index:1}
+.logo-ring3{position:absolute;inset:-44px;border-radius:50%;border:1px dashed rgba(192,57,43,.06);animation:spin-slow 60s linear infinite;pointer-events:none;z-index:1}
+@keyframes spin-slow{to{transform:rotate(360deg)}}
+@keyframes pulse-ring{0%,100%{box-shadow:0 0 0 0 rgba(192,57,43,.5),0 0 40px rgba(192,57,43,.2)}50%{box-shadow:0 0 0 22px rgba(192,57,43,0),0 0 70px rgba(192,57,43,.35)}}
+
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--border2);background:rgba(192,57,43,.06);color:var(--red2);font-size:.68rem;font-weight:700;padding:6px 18px;border-radius:2px;letter-spacing:4px;margin-bottom:1.4rem;text-transform:uppercase}
+.hero-badge::before,.hero-badge::after{content:'◆';font-size:.5rem;opacity:.6}
+.hero h1{font-family:'Tajawal',sans-serif;font-size:clamp(2.8rem,8vw,6.5rem);font-weight:900;color:#fff;line-height:1;margin-bottom:.2rem;letter-spacing:-2px;text-shadow:0 0 60px rgba(192,57,43,.3)}
+.hero h1 .accent{color:var(--red2);text-shadow:0 0 30px rgba(231,76,60,.5)}
+.hero-subtitle{font-size:clamp(1rem,2.5vw,1.6rem);color:var(--muted);margin-bottom:1rem;letter-spacing:4px;font-weight:300}
+.hero-divider{display:flex;align-items:center;gap:1rem;justify-content:center;margin-bottom:1.2rem}
+.hero-divider::before,.hero-divider::after{content:'';width:60px;height:1px;background:linear-gradient(to right,transparent,rgba(192,57,43,.4))}
+.hero-divider::after{background:linear-gradient(to left,transparent,rgba(192,57,43,.4))}
+.hero-divider span{color:var(--red);font-size:.7rem;letter-spacing:3px}
+.hero-desc{color:var(--muted);font-size:.95rem;max-width:460px;margin:0 auto 2.8rem;line-height:1.9}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-main{background:linear-gradient(135deg,var(--red) 0%,var(--red2) 100%);color:#fff;font-weight:700;font-size:.85rem;padding:14px 40px;border-radius:3px;border:none;letter-spacing:2px;transition:all .25s;text-transform:uppercase;cursor:pointer;display:inline-block;position:relative;overflow:hidden}
+.btn-main::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--red2),var(--red3));opacity:0;transition:opacity .25s}
+.btn-main:hover::before{opacity:1}
+.btn-main:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(192,57,43,.5)}
+.btn-main span{position:relative;z-index:1}
+.btn-outline{background:transparent;color:var(--text);font-weight:700;font-size:.85rem;padding:13px 38px;border-radius:3px;border:1px solid rgba(255,255,255,.15);letter-spacing:2px;transition:all .25s;text-transform:uppercase;cursor:pointer;display:inline-block}
+.btn-outline:hover{border-color:var(--border2);color:var(--red2);background:rgba(192,57,43,.05)}
+
+.hero-stats{display:flex;gap:0;justify-content:center;margin-top:5rem;position:relative;z-index:3;flex-wrap:wrap;max-width:700px;margin-right:auto;margin-left:auto}
+.stat{text-align:center;padding:1.5rem 3rem;border-left:1px solid var(--border);position:relative}
+.stat:last-child{border-left:none}
+.stat::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:1px;height:2px;background:var(--red)}
+.stat-num{font-family:'Tajawal',sans-serif;font-size:2.4rem;font-weight:900;color:#fff;line-height:1}
+.stat-num span{color:var(--red2)}
+.stat-label{font-size:.62rem;color:var(--muted);letter-spacing:3px;margin-top:.4rem;text-transform:uppercase}
+
+/* SECTION DECORATIONS */
+.section-line{height:1px;background:linear-gradient(to right,transparent,var(--border2),transparent);max-width:1000px;margin:0 auto}
+section{padding:7rem 4vw;position:relative}
+.container{max-width:1280px;margin:auto}
+.s-eyebrow{display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem}
+.s-eyebrow::before{content:'';width:24px;height:1px;background:var(--red2)}
+.s-label{font-size:.65rem;letter-spacing:5px;color:var(--red2);font-weight:700;text-transform:uppercase}
+.s-title{font-family:'Tajawal',sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;color:#fff;margin-bottom:.8rem;line-height:1.05}
+.s-desc{color:var(--muted);font-size:.92rem;max-width:520px;line-height:1.9}
+.section-deco{position:absolute;font-family:'Tajawal',sans-serif;font-size:8rem;font-weight:900;opacity:.02;color:#fff;top:50%;transform:translateY(-50%);left:2rem;letter-spacing:-5px;pointer-events:none;line-height:1}
+
+/* STREAMERS */
+#streamers{background:var(--dark2)}
+.streamers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:3.5rem}
+.streamer-card{background:var(--dark3);border:1px solid var(--border);border-radius:6px;padding:2.5rem 1.5rem;text-align:center;text-decoration:none;color:var(--text);transition:all .35s;display:block;position:relative;overflow:hidden}
+.streamer-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(192,57,43,.04),transparent 60%);opacity:0;transition:opacity .35s}
+.streamer-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red2),transparent);transform:scaleX(0);transition:transform .4s}
+.streamer-card:hover{border-color:var(--border2);transform:translateY(-8px);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.streamer-card:hover::before{opacity:1}
+.streamer-card:hover::after{transform:scaleX(1)}
+.s-avatar-wrap{position:relative;display:inline-block;margin-bottom:1.4rem}
+.s-avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;border:2px solid var(--border2);display:block;transition:border-color .35s}
+.streamer-card:hover .s-avatar{border-color:rgba(192,57,43,.7)}
+.live-dot{position:absolute;bottom:5px;right:5px;width:15px;height:15px;border-radius:50%;background:var(--red2);border:2px solid var(--dark3);animation:blink 1.5s ease-in-out infinite;box-shadow:0 0 8px rgba(231,76,60,.6)}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 8px rgba(231,76,60,.6)}50%{opacity:.3;box-shadow:none}}
+.s-name{font-family:'Tajawal',sans-serif;font-weight:900;font-size:1.05rem;color:#fff;margin-bottom:.3rem;letter-spacing:.5px}
+.s-platform{font-size:.65rem;color:var(--red2);letter-spacing:3px;text-transform:uppercase}
+.s-watch-btn{display:inline-block;margin-top:1.2rem;font-size:.7rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;border:1px solid var(--border);padding:6px 16px;border-radius:2px;transition:all .2s}
+.streamer-card:hover .s-watch-btn{border-color:var(--border2);color:var(--red2)}
+
+/* LAWS */
+#laws-home{background:var(--dark)}
+.laws-cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:1.5rem;margin-top:3.5rem}
+.law-nav-card{background:var(--dark3);border:1px solid var(--border);border-radius:6px;padding:2rem 1.8rem;cursor:pointer;transition:all .35s;display:flex;flex-direction:column;gap:.9rem;position:relative;overflow:hidden}
+.law-nav-card-bg{position:absolute;top:-20px;left:-20px;font-size:5rem;opacity:.03;pointer-events:none;line-height:1}
+.law-nav-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(192,57,43,.05),transparent 60%);opacity:0;transition:opacity .3s}
+.law-nav-card::after{content:'';position:absolute;bottom:0;right:0;left:0;height:2px;background:linear-gradient(90deg,var(--red),var(--red2));transform:scaleX(0);transition:transform .35s;transform-origin:right}
+.law-nav-card:hover{border-color:var(--border2);transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.law-nav-card:hover::before{opacity:1}
+.law-nav-card:hover::after{transform:scaleX(1)}
+.law-nav-icon{font-size:2rem;line-height:1;position:relative;z-index:1}
+.law-nav-title{font-family:'Tajawal',sans-serif;font-weight:900;color:#fff;font-size:1.05rem;letter-spacing:.5px;position:relative;z-index:1}
+.law-nav-desc{font-size:.82rem;color:var(--muted);line-height:1.8;position:relative;z-index:1}
+.law-nav-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;position:relative;z-index:1}
+.law-nav-arrow{color:var(--red2);font-size:.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:.4rem}
+.law-nav-count{font-size:.65rem;color:var(--muted2);letter-spacing:1px}
+
+/* ABOUT */
+#about{background:var(--dark2)}
+.about-wrap{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;margin-top:4rem}
+@media(max-width:768px){.about-wrap{grid-template-columns:1fr;gap:3rem}}
+.about-img-box{aspect-ratio:1;border-radius:8px;background:var(--dark4);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.about-img-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(192,57,43,.12),transparent 70%)}
+.about-img-corner{position:absolute;width:30px;height:30px;opacity:.4}
+.about-img-corner.tl{top:12px;right:12px;border-top:2px solid var(--red);border-right:2px solid var(--red)}
+.about-img-corner.bl{bottom:12px;right:12px;border-bottom:2px solid var(--red);border-right:2px solid var(--red)}
+.about-img-corner.tr{top:12px;left:12px;border-top:2px solid var(--red);border-left:2px solid var(--red)}
+.about-img-corner.br{bottom:12px;left:12px;border-bottom:2px solid var(--red);border-left:2px solid var(--red)}
+.about-logo-big{width:72%;height:72%;object-fit:contain;position:relative;z-index:1}
+.about-point{display:flex;gap:1.2rem;align-items:flex-start;margin-bottom:1.8rem;padding-bottom:1.8rem;border-bottom:1px solid var(--border)}
+.about-point:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.point-num-wrap{flex-shrink:0;width:40px;height:40px;border:1px solid var(--border2);border-radius:4px;display:flex;align-items:center;justify-content:center;background:rgba(192,57,43,.06)}
+.point-num{font-family:'Tajawal',sans-serif;font-size:.85rem;font-weight:900;color:var(--red2)}
+.point-title{font-family:'Tajawal',sans-serif;font-weight:900;color:#fff;font-size:.95rem;margin-bottom:.3rem}
+.point-desc{font-size:.82rem;color:var(--muted);line-height:1.8}
+
+/* SOCIAL */
+#social{background:var(--dark);text-align:center}
+.social-inner{max-width:640px;margin:auto;position:relative}
+.social-inner::before{content:'';position:absolute;top:50%;left:-80px;width:60px;height:1px;background:linear-gradient(to left,var(--border2),transparent)}
+.social-inner::after{content:'';position:absolute;top:50%;right:-80px;width:60px;height:1px;background:linear-gradient(to right,var(--border2),transparent)}
+.social-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2.5rem}
+.s-btn{display:inline-flex;align-items:center;gap:.7rem;background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:14px 34px;border-radius:4px;text-decoration:none;font-weight:700;font-size:.85rem;letter-spacing:1px;transition:all .25s;position:relative;overflow:hidden}
+.s-btn::before{content:'';position:absolute;inset:0;background:rgba(192,57,43,.06);opacity:0;transition:opacity .25s}
+.s-btn:hover{border-color:var(--border2);color:#fff;transform:translateY(-2px)}
+.s-btn:hover::before{opacity:1}
+.s-btn svg{width:18px;height:18px;fill:currentColor;flex-shrink:0}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2.5rem 4vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;background:var(--dark2)}
+.footer-brand{display:flex;align-items:center;gap:.8rem}
+.footer-brand img{width:30px;height:30px;border-radius:50%;object-fit:cover;border:1px solid var(--border2)}
+.footer-brand-text{display:flex;flex-direction:column}
+.footer-brand-name{font-size:.8rem;color:#fff;font-weight:700;letter-spacing:1px}
+.footer-brand-sub{font-size:.65rem;color:var(--muted);letter-spacing:2px}
+.footer-links{display:flex;gap:1.5rem}
+.footer-links a{font-size:.72rem;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;cursor:pointer}
+.footer-links a:hover{color:var(--red2)}
+footer p{font-size:.72rem;color:var(--muted2)}
+
+/* LAW DETAIL PAGES */
+.law-page-header{padding:9rem 4vw 5rem;background:var(--dark2);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.law-page-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(192,57,43,.06),transparent 70%)}
+.law-page-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--border2),transparent)}
+.law-page-deco{position:absolute;left:4vw;top:50%;transform:translateY(-50%);font-family:'Tajawal',sans-serif;font-size:10rem;font-weight:900;color:var(--red);opacity:.025;line-height:1;pointer-events:none}
+.law-page-header-inner{max-width:1100px;margin:auto;position:relative;z-index:1}
+.back-btn{display:inline-flex;align-items:center;gap:.6rem;color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;transition:color .2s;margin-bottom:2.5rem;letter-spacing:2px;background:none;border:none;font-family:'Cairo',sans-serif;text-transform:uppercase}
+.back-btn:hover{color:var(--red2)}
+.law-page-icon-wrap{display:flex;align-items:center;gap:1.2rem;margin-bottom:1.2rem}
+.law-page-icon{font-size:2.5rem;line-height:1}
+.law-page-badge{font-size:.65rem;letter-spacing:3px;color:var(--red2);font-weight:700;text-transform:uppercase;border:1px solid var(--border2);padding:4px 12px;border-radius:2px;background:rgba(192,57,43,.06)}
+.law-page-title{font-family:'Tajawal',sans-serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:900;color:#fff;margin-bottom:.6rem;line-height:1}
+.law-page-sub{color:var(--muted);font-size:.92rem;line-height:1.9;max-width:580px}
+
+.law-page-body{padding:5rem 4vw 7rem;background:var(--dark)}
+.law-page-body-inner{max-width:920px;margin:auto}
+.law-rules-list{list-style:none;display:flex;flex-direction:column}
+.law-rule-item{display:flex;gap:1.5rem;padding:1.2rem 0;border-bottom:1px solid rgba(255,255,255,.04);align-items:flex-start;transition:background .2s}
+.law-rule-item:hover{background:rgba(192,57,43,.03);margin:0 -1rem;padding:1.2rem 1rem}
+.law-rule-item:last-child{border-bottom:none}
+.rule-num{font-size:.68rem;font-weight:700;color:var(--red2);min-width:38px;text-align:center;border:1px solid var(--border);border-radius:3px;padding:5px 6px;flex-shrink:0;margin-top:3px;line-height:1.3;background:var(--border3)}
+.rule-text{font-size:.9rem;color:var(--text);line-height:2}
+.rule-text strong{color:var(--red2)}
+
+.rob-section{margin-top:3.5rem;background:var(--dark3);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.rob-section-header{padding:1.2rem 1.8rem;display:flex;align-items:center;gap:.8rem;border-bottom:1px solid var(--border)}
+.rob-section-header::before{content:'';width:3px;height:20px;background:var(--red);border-radius:2px;flex-shrink:0}
+.rob-section-title{font-weight:700;color:var(--red2);font-size:.78rem;letter-spacing:3px;text-transform:uppercase}
+.rob-table{width:100%;border-collapse:collapse}
+.rob-table th,.rob-table td{padding:12px 22px;text-align:center;border-bottom:1px solid rgba(255,255,255,.04);font-size:.875rem}
+.rob-table th{background:rgba(192,57,43,.06);color:var(--red2);font-weight:700;letter-spacing:1px;font-size:.75rem;text-transform:uppercase}
+.rob-table tr:last-child td{border-bottom:none}
+.rob-table tr:hover td{background:rgba(192,57,43,.04)}
+.rob-table td:last-child{color:var(--gold);font-weight:700}
+
+/* FORM PAGE */
+.form-page-wrap{padding:9rem 4vw 7rem;min-height:100vh;background:var(--dark);position:relative}
+.form-page-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--border2),transparent)}
+.form-page-inner{max-width:800px;margin:auto}
+.form-back-btn{display:inline-flex;align-items:center;gap:.6rem;color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;transition:color .2s;margin-bottom:3rem;background:none;border:none;font-family:'Cairo',sans-serif;letter-spacing:2px;text-transform:uppercase}
+.form-back-btn:hover{color:var(--red2)}
+.form-header{text-align:center;margin-bottom:4rem;padding-bottom:3rem;border-bottom:1px solid var(--border);position:relative}
+.form-header-badge{display:inline-block;font-size:.65rem;letter-spacing:4px;color:var(--red2);font-weight:700;text-transform:uppercase;border:1px solid var(--border2);padding:5px 16px;border-radius:2px;background:rgba(192,57,43,.06);margin-bottom:1.2rem}
+.form-header h2{font-family:'Tajawal',sans-serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;color:#fff;margin-bottom:.6rem}
+.form-header p{color:var(--muted);font-size:.88rem;line-height:1.8}
+.form-header::after{content:'◆';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);color:var(--red);font-size:.7rem;background:var(--dark);padding:0 8px}
+
+.form-section-wrap{margin-bottom:3rem}
+.form-section-title{font-size:.68rem;letter-spacing:4px;font-weight:700;color:var(--red2);text-transform:uppercase;padding:1.2rem 1.5rem;margin-bottom:1.5rem;border-right:3px solid var(--red);background:rgba(192,57,43,.04);border-radius:0 4px 4px 0}
+.form-group{margin-bottom:1.6rem}
+.form-label{display:block;font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:.6rem;letter-spacing:.5px}
+.form-label .req{color:var(--red2);margin-right:3px}
+.form-input,.form-textarea{
+  width:100%;background:var(--dark3);border:1px solid var(--border);
+  border-radius:4px;padding:13px 18px;font-size:.9rem;
+  color:var(--text);font-family:'Cairo',sans-serif;
+  transition:all .25s;outline:none;
+}
+.form-input:focus,.form-textarea:focus{border-color:var(--border2);background:var(--dark4);box-shadow:0 0 0 3px rgba(192,57,43,.06)}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--muted2);font-size:.83rem}
+.form-textarea{min-height:90px;resize:vertical;line-height:1.8}
+.form-textarea.tall{min-height:130px}
+.form-hint{font-size:.78rem;color:var(--muted);margin-top:.5rem;line-height:1.7;padding-right:.5rem;border-right:2px solid var(--border);padding-top:.2rem;padding-bottom:.2rem}
+
+.form-submit-wrap{text-align:center;margin-top:4rem;padding-top:3rem;border-top:1px solid var(--border);position:relative}
+.form-submit-wrap::before{content:'◆';position:absolute;top:-10px;left:50%;transform:translateX(-50%);color:var(--red);font-size:.7rem;background:var(--dark);padding:0 8px}
+.form-submit{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;font-weight:700;font-size:.9rem;padding:16px 60px;border-radius:4px;border:none;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .25s;font-family:'Cairo',sans-serif;width:100%;max-width:360px;position:relative;overflow:hidden}
+.form-submit::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--red2),var(--red3));opacity:0;transition:opacity .25s}
+.form-submit:hover:not(:disabled)::before{opacity:1}
+.form-submit:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 12px 35px rgba(192,57,43,.5)}
+.form-submit:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.form-submit-text{position:relative;z-index:1}
+.form-note{margin-top:1rem;font-size:.72rem;color:var(--muted2);letter-spacing:.5px}
+
+/* TOAST */
+.toast{position:fixed;bottom:2.5rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark3);border-radius:4px;padding:1.1rem 2.5rem;font-size:.88rem;font-weight:700;z-index:9999;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .4s;opacity:0;min-width:300px;text-align:center;letter-spacing:.5px}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.success{border:1px solid rgba(39,174,96,.4);color:#2ecc71;box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.toast.error{border:1px solid rgba(192,57,43,.4);color:var(--red2);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+
+/* FADE */
+.fade-up{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.fade-up.visible{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .nav-links{display:none}
+  .hero-stats{flex-wrap:wrap}
+  .stat{padding:1rem 1.5rem;border-bottom:1px solid var(--border);border-left:none;width:50%}
+  .laws-cards-grid,.streamers-grid{grid-template-columns:1fr}
+  footer{justify-content:center;text-align:center}
+  .footer-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+<div class="toast" id="toast"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="nav-brand" onclick="goHome()">
+      <img src="logo.png" alt="JC" onerror="this.src='800.gif'">
+      <div>
+        <span class="nav-brand-name">Justice City RP</span>
+        <span class="nav-brand-sub">مدينة العدالة</span>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a onclick="goHome();scrollToId('streamers')">صناع المحتوى</a></li>
+      <li><a onclick="goHome();scrollToId('laws-home')">القوانين</a></li>
+      <li><a onclick="goHome();scrollToId('about')">من نحن</a></li>
+    </ul>
+    <span class="nav-cta" onclick="openPage('page-form')"><span>انضم الآن</span></span>
+  </div>
+</nav>
+
+<!-- ════════════════════ HOME ════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <video class="hero-video-bg" autoplay muted loop playsinline preload="auto">
+      <source src="JC_CFW_.mp4" type="video/mp4">
+      <source src="JC_CFW_.mov" type="video/quicktime">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-overlay2"></div>
+    <div class="hero-grid-bg"></div>
+    <div class="hero-scan"></div>
+    <div class="hero-corner tl"></div>
+    <div class="hero-corner tr"></div>
+    <div class="hero-corner bl"></div>
+    <div class="hero-corner br"></div>
+
+    <div class="hero-content">
+      <div class="hero-logo-wrap">
+        <div class="logo-ring3"></div>
+        <div class="logo-ring2"></div>
+        <div class="logo-ring"></div>
+        <img class="hero-logo" src="logo.png" alt="Justice City" onerror="this.src='800.gif'">
+      </div>
+      <div class="hero-badge">⚖ FiveM • Arabic Server • 2026 ⚖</div>
+      <h1>Justice City <span class="accent">RP</span></h1>
+      <p class="hero-subtitle">مدينة العدالة</p>
+      <div class="hero-divider"><span>◆ ◆ ◆</span></div>
+      <p class="hero-desc">أفضل تجربة رول بلاي عربي في الشرق الأوسط<br>ابنِ شخصيتك — عيش قصتك — اصنع تاريخك</p>
+      <div class="hero-btns">
+        <span class="btn-main" onclick="openPage('page-form')"><span>⚡ قدّم طلب التفعيل الآن</span></span>
+        <span class="btn-outline" onclick="scrollToId('streamers')">شاهد البثوث ▶</span>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">17<span>+</span></div>
+        <div class="stat-label">الحد الأدنى للعمر</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">9<span>+</span></div>
+        <div class="stat-label">أنواع السرقات</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3<span>+</span></div>
+        <div class="stat-label">صناع محتوى</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">25</div>
+        <div class="stat-label">حد العصابة</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-line"></div>
+
+  <!-- STREAMERS -->
+  <section id="streamers">
+    <div class="section-deco">KICK</div>
+    <div class="container">
+      <div class="fade-up">
+        <div class="s-eyebrow"><span class="s-label">Content Creators</span></div>
+        <h2 class="s-title">صناع المحتوى</h2>
+        <p class="s-desc">نخبة من أبرز صناع المحتوى العرب يبثون مباشرة من قلب مدينة العدالة</p>
+      </div>
+      <div class="streamers-grid">
+        <a class="streamer-card fade-up" href="https://kick.com/maacseky" target="_blank">
+          <div class="s-avatar-wrap"><img class="s-avatar" src="https://files.kick.com/images/user/76068147/profile_image/conversion/d0746619-1817-4062-83cc-496aba871cd1-fullsize.webp" alt="maacseky" onerror="this.style.opacity='.3'"><div class="live-dot"></div></div>
+          <p class="s-name">maacseky</p><p class="s-platform">kick.com</p>
+          <span class="s-watch-btn">شاهد البث ▶</span>
+        </a>
+        <a class="streamer-card fade-up" href="https://kick.com/abuhema" target="_blank" style="transition-delay:.12s">
+          <div class="s-avatar-wrap"><img class="s-avatar" src="https://files.kick.com/images/user/47238994/profile_image/conversion/534ec3db-f0ad-4b3e-a253-db083acaab49-fullsize.webp" alt="abuhema" onerror="this.style.opacity='.3'"><div class="live-dot"></div></div>
+          <p class="s-name">abuhema</p><p class="s-platform">kick.com</p>
+          <span class="s-watch-btn">شاهد البث ▶</span>
+        </a>
+        <a class="streamer-card fade-up" href="https://kick.com/sliver1234" target="_blank" style="transition-delay:.24s">
+          <div class="s-avatar-wrap"><img class="s-avatar" src="https://files.kick.com/images/user/99636639/profile_image/conversion/5e51e7b7-f4c9-48bc-9239-9d57c100c239-fullsize.webp" alt="sliver1234" onerror="this.style.opacity='.3'"><div class="live-dot"></div></div>
+          <p class="s-name">sliver1234</p><p class="s-platform">kick.com</p>
+          <span class="s-watch-btn">شاهد البث ▶</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-line"></div>
+
+  <!-- LAWS -->
+  <section id="laws-home">
+    <div class="section-deco">LAW</div>
+    <div class="container">
+      <div class="fade-up">
+        <div class="s-eyebrow"><span class="s-label">City Rules</span></div>
+        <h2 class="s-title">قوانين المدينة</h2>
+        <p class="s-desc">اختر القسم للاطلاع على قوانينه كاملةً — الالتزام شرط الاستمرار</p>
+      </div>
+      <div class="laws-cards-grid">
+        <div class="law-nav-card fade-up" onclick="openPage('page-general')">
+          <div class="law-nav-card-bg">📜</div>
+          <div class="law-nav-icon">📜</div>
+          <div class="law-nav-title">القوانين العامة</div>
+          <div class="law-nav-desc">القواعد الأساسية التي تحكم جميع اللاعبين داخل مدينة العدالة دون استثناء</div>
+          <div class="law-nav-footer"><span class="law-nav-arrow">اقرأ القوانين ◄</span><span class="law-nav-count">29 قانون</span></div>
+        </div>
+        <div class="law-nav-card fade-up" onclick="openPage('page-safezones')" style="transition-delay:.06s">
+          <div class="law-nav-card-bg">🏙</div>
+          <div class="law-nav-icon">🏙</div>
+          <div class="law-nav-title">المناطق الآمنة</div>
+          <div class="law-nav-desc">تعريف المناطق الآمنة وحدودها وقوانين التصرف داخلها وعند الهروب إليها</div>
+          <div class="law-nav-footer"><span class="law-nav-arrow">اقرأ القوانين ◄</span><span class="law-nav-count">10 قوانين</span></div>
+        </div>
+        <div class="law-nav-card fade-up" onclick="openPage('page-crime')" style="transition-delay:.12s">
+          <div class="law-nav-card-bg">🔫</div>
+          <div class="law-nav-icon">🔫</div>
+          <div class="law-nav-title">قوانين الإجرام</div>
+          <div class="law-nav-desc">قوانين السرقات والخطف والتفاوض وأعداد الأشخاص المسموحة لكل عملية</div>
+          <div class="law-nav-footer"><span class="law-nav-arrow">اقرأ القوانين ◄</span><span class="law-nav-count">19 قانون</span></div>
+        </div>
+        <div class="law-nav-card fade-up" onclick="openPage('page-police')" style="transition-delay:.18s">
+          <div class="law-nav-card-bg">🚔</div>
+          <div class="law-nav-icon">🚔</div>
+          <div class="law-nav-title">قوانين الشرطة</div>
+          <div class="law-nav-desc">بروتوكولات ومتطلبات أعضاء قوات الأمن والسلوك العسكري داخل المدينة</div>
+          <div class="law-nav-footer"><span class="law-nav-arrow">اقرأ القوانين ◄</span><span class="law-nav-count">15 قانون</span></div>
+        </div>
+        <div class="law-nav-card fade-up" onclick="openPage('page-gangs')" style="transition-delay:.24s">
+          <div class="law-nav-card-bg">🗡</div>
+          <div class="law-nav-icon">🗡</div>
+          <div class="law-nav-title">قوانين العصابات</div>
+          <div class="law-nav-desc">قواعد تأسيس العصابات وإدارتها وتنظيم العلاقات والعداوات بينها</div>
+          <div class="law-nav-footer"><span class="law-nav-arrow">اقرأ القوانين ◄</span><span class="law-nav-count">12 قانون</span></div>
+        </div>
+        <div class="law-nav-card fade-up" onclick="openPage('page-ems')" style="transition-delay:.3s">
+          <div class="law-nav-card-bg">🚑</div>
+          <div class="law-nav-icon">🚑</div>
+          <div class="law-nav-title">قوانين الإسعاف</div>
+          <div class="law-nav-desc">لوائح وبروتوكولات عمل فريق الصحة والإسعاف ومعايير الرعاية الطبية</div>
+          <div class="law-nav-footer"><span class="law-nav-arrow">اقرأ القوانين ◄</span><span class="law-nav-count">12 قانون</span></div>
+        </div>
+        <div class="law-nav-card fade-up" onclick="openPage('page-restaurants')" style="transition-delay:.36s">
+          <div class="law-nav-card-bg">🍽</div>
+          <div class="law-nav-icon">🍽</div>
+          <div class="law-nav-title">المطاعم والورش</div>
+          <div class="law-nav-desc">قوانين التعامل مع موظفي المطاعم والورش وأماكن العمل المدنية</div>
+          <div class="law-nav-footer"><span class="law-nav-arrow">اقرأ القوانين ◄</span><span class="law-nav-count">10 قوانين</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-line"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-deco">JC</div>
+    <div class="container">
+      <div class="about-wrap">
+        <div class="about-img-box fade-up">
+          <div class="about-img-corner tl"></div>
+          <div class="about-img-corner tr"></div>
+          <div class="about-img-corner bl"></div>
+          <div class="about-img-corner br"></div>
+          <img class="about-logo-big" src="logo.png" alt="Justice City Logo" onerror="this.src='800.gif'">
+        </div>
+        <div class="fade-up" style="transition-delay:.15s">
+          <div class="s-eyebrow"><span class="s-label">About Us</span></div>
+          <h2 class="s-title">من نحن</h2>
+          <p class="s-desc" style="margin-bottom:2.5rem">سيرفر FiveM عربي تأسس عام 2026 بهدف تقديم أفضل تجربة رول بلاي في منطقة الشرق الأوسط</p>
+          <div>
+            <div class="about-point">
+              <div class="point-num-wrap"><span class="point-num">01</span></div>
+              <div><p class="point-title">مجتمع حيوي ومتماسك</p><p class="point-desc">يجمع اللاعبين والمؤثرين والمشاهدين في بيئة تفاعلية غنية بالمحتوى العربي الأصيل</p></div>
+            </div>
+            <div class="about-point">
+              <div class="point-num-wrap"><span class="point-num">02</span></div>
+              <div><p class="point-title">قوانين واضحة وعادلة</p><p class="point-desc">نظام قانوني متكامل يضمن المتعة والاحترام والعدالة بين جميع اللاعبين داخل المدينة</p></div>
+            </div>
+            <div class="about-point">
+              <div class="point-num-wrap"><span class="point-num">03</span></div>
+              <div><p class="point-title">تجربة رول بلاي استثنائية</p><p class="point-desc">سيناريوهات واقعية، عصابات منظمة، وظائف متعددة، وعالم حي لا ينتهي من المغامرات</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-line"></div>
+
+  <!-- SOCIAL -->
+  <section id="social">
+    <div class="container">
+      <div class="social-inner fade-up">
+        <div class="s-eyebrow" style="justify-content:center"><span class="s-label">Join Us</span></div>
+        <h2 class="s-title">انضم للمجتمع</h2>
+        <p class="s-desc" style="margin:0 auto;text-align:center">تواصل معنا عبر الديسكورد والإنستاغرام وكن جزءاً من مدينة العدالة</p>
+        <div class="social-btns">
+          <a class="s-btn" href="https://discord.gg/JC1" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+            الديسكورد الرسمي
+          </a>
+          <a class="s-btn" href="https://www.instagram.com/justice_city1" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            إنستاغرام
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-brand">
+      <img src="logo.png" alt="JC" onerror="this.src='800.gif'">
+      <div class="footer-brand-text">
+        <span class="footer-brand-name">Justice City RP</span>
+        <span class="footer-brand-sub">مدينة العدالة • 2026</span>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a onclick="goHome();scrollToId('streamers')">صناع المحتوى</a>
+      <a onclick="goHome();scrollToId('laws-home')">القوانين</a>
+      <a onclick="openPage('page-form')">طلب التفعيل</a>
+    </div>
+    <p>© 2026 Justice City RP — جميع الحقوق محفوظة</p>
+  </footer>
+</div>
+
+<!-- ════════════════════ FORM PAGE ════════════════════ -->
+<div id="page-form" class="page">
+  <div class="form-page-wrap">
+    <div class="form-page-inner">
+      <button class="form-back-btn" onclick="goHome()">◄ العودة للرئيسية</button>
+
+      <div class="form-header">
+        <div class="form-header-badge">⚖ طلب الانضمام الرسمي ⚖</div>
+        <h2>نموذج الانضمام للمدينة</h2>
+        <p>أكمل جميع الحقول المطلوبة بعناية ودقة<br>سيتم مراجعة طلبك من قبل الإدارة خلال 24-48 ساعة</p>
+      </div>
+
+      <form id="joinForm" onsubmit="submitForm(event)">
+        <div class="form-section-wrap">
+          <div class="form-section-title">◆ الجزء الأول: الأسئلة العامة وأسئلة الشخصية</div>
+
+          <div class="form-group">
+            <label class="form-label"><span class="req">*</span> آيدي الديسكورد (Discord ID)</label>
+            <input class="form-input" type="text" name="discord_id" placeholder="مثال: username#0000 أو الآيدي الرقمي" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span class="req">*</span> شرفنا باسمك وعمرك الحقيقيين</label>
+            <input class="form-input" type="text" name="real_info" placeholder="الاسم الكامل والعمر" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span class="req">*</span> اسم الشخصية الأول والأخير وتاريخ ميلادها والمنشأ واللغة</label>
+            <input class="form-input" type="text" name="char_info" placeholder="مثال: محمد العمري — 1990/5/15 — سعودي — العربية" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ما هي قصة الشخصية؟</label>
+            <textarea class="form-textarea tall" name="char_story" placeholder="اكتب قصة شخصيتك هنا — خلفيتها، ماضيها، وما الذي جاء بها إلى مدينة العدالة..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span class="req">*</span> ما هي إيجابيات وسلبيات الشخصية؟</label>
+            <textarea class="form-textarea" name="char_traits" placeholder="الإيجابيات: ...&#10;السلبيات: ..." required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span class="req">*</span> هل لديك خبرة سابقة في تقمص الشخصيات؟</label>
+            <textarea class="form-textarea" name="rp_exp" placeholder="اذكر خبرتك في الرول بلاي — السيرفرات السابقة والمدة..." required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span class="req">*</span> سبب رغبتك في دخول مدينة العدالة</label>
+            <textarea class="form-textarea" name="join_reason" placeholder="لماذا اخترت Justice City RP تحديداً؟" required></textarea>
+          </div>
+        </div>
+
+        <div class="form-section-wrap">
+          <div class="form-section-title">◆ الجزء الثاني: المواقف — كيف ستتصرف شخصيتك؟</div>
+
+          <div class="form-group">
+            <label class="form-label"><span class="req">*</span> الموقف الأول</label>
+            <p class="form-hint">بعد توجهك إلى أحد الأحياء الخطيرة في المدينة وجدت سيارة مركونة في أحد الأزقة وداخلها شحنة قد تكون مواد مخدرة. ماذا ستفعل؟</p>
+            <textarea class="form-textarea tall" name="situation_1" required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span class="req">*</span> الموقف الثاني</label>
+            <p class="form-hint">أنت مدان لعصابة في منطقة سكنك بمبلغ كبير ولديك وقت محدد للسداد، لا يمكنك السداد في الوقت المحدد. ما هي الطرق القانونية لتوفير المبلغ المطلوب؟</p>
+            <textarea class="form-textarea tall" name="situation_2" required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span class="req">*</span> الموقف الثالث</label>
+            <p class="form-hint">يوم عادي لك كسائق تاكسي وفي إحدى الليالي الباردة اتصل بك شخص لنقله، وعندما وصلت رأيته يحتجز شخصاً كرهينة. يبدو مجرماً متقلب المزاج. ماذا ستفعل مع ذكر السبب؟</p>
+            <textarea class="form-textarea tall" name="situation_3" required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span class="req">*</span> الموقف الرابع</label>
+            <p class="form-hint">وصلك بريد إلكتروني: بيتك مرهون للبنك في حال عدم سداد المبلغ المتبقي سيعرض في مزاد علني، ولا يمكنك السداد في الوقت المحدد. فما الحل لإنقاذ بيتك؟</p>
+            <textarea class="form-textarea tall" name="situation_4" required></textarea>
+          </div>
+        </div>
+
+        <div class="form-submit-wrap">
+          <button class="form-submit" type="submit" id="submitBtn">
+            <span class="form-submit-text">⚡ إرسال الطلب</span>
+          </button>
+          <p class="form-note">بالإرسال أنت تقر بقراءة وموافقتك على جميع قوانين مدينة العدالة</p>
+        </div>
+      </form>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-brand"><img src="logo.png" alt="JC" onerror="this.src='800.gif'"><div class="footer-brand-text"><span class="footer-brand-name">Justice City RP</span><span class="footer-brand-sub">مدينة العدالة</span></div></div>
+    <p>© 2026 Justice City RP — جميع الحقوق محفوظة</p>
+  </footer>
+</div>
+
+<!-- ════════════════════ LAW PAGES ════════════════════ -->
+<div id="page-general" class="page">
+  <div class="law-page-header">
+    <div class="law-page-deco">01</div>
+    <div class="law-page-header-inner">
+      <button class="back-btn" onclick="goHome()">◄ العودة للرئيسية</button>
+      <div class="law-page-icon-wrap"><span class="law-page-icon">📜</span><span class="law-page-badge">General Rules</span></div>
+      <h1 class="law-page-title">القوانين العامة</h1>
+      <p class="law-page-sub">القواعد الأساسية التي تحكم جميع اللاعبين داخل مدينة العدالة دون استثناء — الالتزام إلزامي</p>
+    </div>
+  </div>
+  <div class="law-page-body"><div class="law-page-body-inner"><ul class="law-rules-list">
+    <li class="law-rule-item"><span class="rule-num">01</span><span class="rule-text">العمر المسموح للتفعيل هو <strong>17+</strong> ولن يتم تفعيل من هم أقل سناً</span></li>
+    <li class="law-rule-item"><span class="rule-num">02</span><span class="rule-text">يمنع التواصل غير الشرعي <strong>"Meta Gaming"</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">03</span><span class="rule-text">ممنوع استخدام المركبة كسلاح <strong>"VDM"</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">04</span><span class="rule-text">ممنوع القتل العشوائي <strong>"RDM"</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">05</span><span class="rule-text">يجب بناء كاركتر خاص فيك وتقمصه بشكل ممتاز بالأقوال والأفعال</span></li>
+    <li class="law-rule-item"><span class="rule-num">06</span><span class="rule-text">يمنع إهانة الشخص المسقط أو تحريكه إلا في حالة المساعدة</span></li>
+    <li class="law-rule-item"><span class="rule-num">07</span><span class="rule-text">يمنع انتحال ملابس الشرطة والإسعاف</span></li>
+    <li class="law-rule-item"><span class="rule-num">08</span><span class="rule-text">يمنع الخروج عن الرول بلاي داخل السيرفر لأي سبب من الأسباب</span></li>
+    <li class="law-rule-item"><span class="rule-num">09</span><span class="rule-text">في حال الإسقاط يحق لك التحدث عن الألم فقط ويمنع التحدث بشكل طبيعي</span></li>
+    <li class="law-rule-item"><span class="rule-num">10</span><span class="rule-text">يمنع استخدام الغلتشات أو الثغرات البرمجية والهاك — <strong>عقوبتها باند نهائي</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">11</span><span class="rule-text">يمنع أي اتفاق خارج الرول بلاي</span></li>
+    <li class="law-rule-item"><span class="rule-num">12</span><span class="rule-text">يجب تشغيل برنامج التصوير مع الصوت أثناء اللعب (20 دقيقة)</span></li>
+    <li class="law-rule-item"><span class="rule-num">13</span><span class="rule-text">يمنع التدخل في سيناريو قائم</span></li>
+    <li class="law-rule-item"><span class="rule-num">14</span><span class="rule-text">يمنع على المسعفين التواجد في مكان طلق نار إلا بعد التأكد أن المكان خالٍ</span></li>
+    <li class="law-rule-item"><span class="rule-num">15</span><span class="rule-text">ترابط الشخصية الأولى مع الثانية ممنوع</span></li>
+    <li class="law-rule-item"><span class="rule-num">16</span><span class="rule-text">الشخصنة ممنوعة منعاً باتاً بجميع أنواعها</span></li>
+    <li class="law-rule-item"><span class="rule-num">17</span><span class="rule-text">يمنع لبس عدة الغوص خارج البحر</span></li>
+    <li class="law-rule-item"><span class="rule-num">18</span><span class="rule-text">يجب احترام الجميع ويمنع الإهانة أو الكلام الجنسي أو الاستفزاز بطرق غير أخلاقية</span></li>
+    <li class="law-rule-item"><span class="rule-num">19</span><span class="rule-text">التعرف على الشخص يكون عن طريق الشكل ويمنع التعرف عليه من صوته</span></li>
+    <li class="law-rule-item"><span class="rule-num">20</span><span class="rule-text">يمنع خطف أو التعرض لـ: <strong>المسعفين، المحامين، العقاريين، الإعلاميين</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">21</span><span class="rule-text">يمنع سرقة أغراض الشرطة أو المسعفين</span></li>
+    <li class="law-rule-item"><span class="rule-num">22</span><span class="rule-text">يمنع التربص للموظفين الحكوميين عند مقر وظائفهم بهدف الخطف</span></li>
+    <li class="law-rule-item"><span class="rule-num">23</span><span class="rule-text">يمنع إزعاج موظفي المطاعم والورش في أماكن العمل أو التلفظ عليهم</span></li>
+    <li class="law-rule-item"><span class="rule-num">24</span><span class="rule-text">يمنع الاحتماء بالمناطق الآمنة والاستفزاز منها — في حالة الخطف فقط يحق الاستكمال</span></li>
+    <li class="law-rule-item"><span class="rule-num">25</span><span class="rule-text">في حال فقدان <strong>4 إطارات</strong> من المركبة يمنع استكمال قيادتها</span></li>
+    <li class="law-rule-item"><span class="rule-num">26</span><span class="rule-text">يمنع التعرف على الأشخاص من خلال إعطاء أيتم أو الإيدي منعاً باتاً</span></li>
+    <li class="law-rule-item"><span class="rule-num">27</span><span class="rule-text">يمنع سرقة أو استعمال الطائرات</span></li>
+    <li class="law-rule-item"><span class="rule-num">28</span><span class="rule-text">يمنع استخدام الأوامر أو الإيموتات وأنت مسقط</span></li>
+    <li class="law-rule-item"><span class="rule-num">29</span><span class="rule-text">في حال حصلت مخالفة يستكمل السيناريو حتى النهاية ثم التوجه للدعم الفني</span></li>
+  </ul></div></div>
+  <footer><div class="footer-brand"><img src="logo.png" alt="JC" onerror="this.src='800.gif'"><div class="footer-brand-text"><span class="footer-brand-name">Justice City RP</span></div></div><p>© 2026</p></footer>
+</div>
+
+<div id="page-safezones" class="page">
+  <div class="law-page-header">
+    <div class="law-page-deco">02</div>
+    <div class="law-page-header-inner">
+      <button class="back-btn" onclick="goHome()">◄ العودة للرئيسية</button>
+      <div class="law-page-icon-wrap"><span class="law-page-icon">🏙</span><span class="law-page-badge">Safe Zones</span></div>
+      <h1 class="law-page-title">المناطق الآمنة</h1>
+      <p class="law-page-sub">تعريف المناطق الآمنة وقوانين التصرف داخلها وحدودها الصارمة</p>
+    </div>
+  </div>
+  <div class="law-page-body"><div class="law-page-body-inner"><ul class="law-rules-list">
+    <li class="law-rule-item"><span class="rule-num">تعريف</span><span class="rule-text">المناطق التي يمنع فيها أي <strong>نشاط إجرامي أو النصب والاحتيال</strong> — يجب التعامل داخلها بشكل جيد</span></li>
+    <li class="law-rule-item"><span class="rule-num">قائمة</span><span class="rule-text"><strong>الحديقة العامة، المستشفيات، مراكز الشرطة، المطاعم والكافيهات، السجن، مناطق الوظائف، معارض السيارات، الكراجات، جميع الفنادق والمواقف التابعة لها</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">01</span><span class="rule-text">أي منطقة غير مذكورة تُعتبر <strong>منطقة عامة</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">02</span><span class="rule-text">يمنع استدراج الشرطة أو المواطنين خارج المناطق الآمنة</span></li>
+    <li class="law-rule-item"><span class="rule-num">03</span><span class="rule-text">يمنع تهديد أو خطف المسعفين منعاً باتاً مهما كانت الظروف</span></li>
+    <li class="law-rule-item"><span class="rule-num">04</span><span class="rule-text">الهروب للمنطقة الآمنة لا يوقف السيناريو — ما عدا <strong>مراكز الشرطة والمستشفيات</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">05</span><span class="rule-text">يمنع المتاجرة بالممنوعات أو النصب والاحتيال في المناطق الآمنة</span></li>
+    <li class="law-rule-item"><span class="rule-num">06</span><span class="rule-text">يمنع الاختباء في الملكيات الخاصة إلا بعد مرور أكثر من <strong>10 دقائق</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">07</span><span class="rule-text">يمنع إثارة المشاكل أو افتعال جدال في المناطق الآمنة</span></li>
+    <li class="law-rule-item"><span class="rule-num">08</span><span class="rule-text">يمنع بيع الممنوعات أو التلميح لها في المناطق الآمنة</span></li>
+    <li class="law-rule-item"><span class="rule-num">09</span><span class="rule-text">يمنع السرقة بشكل تام في المناطق الآمنة</span></li>
+    <li class="law-rule-item"><span class="rule-num">10</span><span class="rule-text">جميع الوظائف الحكومية تعتبر مناطقها آمنة</span></li>
+  </ul></div></div>
+  <footer><div class="footer-brand"><img src="logo.png" alt="JC" onerror="this.src='800.gif'"><div class="footer-brand-text"><span class="footer-brand-name">Justice City RP</span></div></div><p>© 2026</p></footer>
+</div>
+
+<div id="page-crime" class="page">
+  <div class="law-page-header">
+    <div class="law-page-deco">03</div>
+    <div class="law-page-header-inner">
+      <button class="back-btn" onclick="goHome()">◄ العودة للرئيسية</button>
+      <div class="law-page-icon-wrap"><span class="law-page-icon">🔫</span><span class="law-page-badge">Crime Rules</span></div>
+      <h1 class="law-page-title">قوانين الإجرام</h1>
+      <p class="law-page-sub">قوانين السرقات والخطف والتفاوض وجميع الأنشطة الإجرامية داخل المدينة</p>
+    </div>
+  </div>
+  <div class="law-page-body"><div class="law-page-body-inner"><ul class="law-rules-list">
+    <li class="law-rule-item"><span class="rule-num">01</span><span class="rule-text">يمنع الاتفاق مع أي شخص ليصبح رهينة</span></li>
+    <li class="law-rule-item"><span class="rule-num">02</span><span class="rule-text">يمنع خطف المواطنين بدون سبب واضح</span></li>
+    <li class="law-rule-item"><span class="rule-num">03</span><span class="rule-text">يمنع مقاومة <strong>السلاح الناري</strong> بسلاح أبيض، ويمنع مقاومة سلاح ثقيل بسلاح خفيف</span></li>
+    <li class="law-rule-item"><span class="rule-num">04</span><span class="rule-text">يمنع مقاومة الخاطف في حال كانت <strong>يداك خاليتين</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">05</span><span class="rule-text">يمنع خطف العسكري أو المواطن المسقط أو الميت</span></li>
+    <li class="law-rule-item"><span class="rule-num">06</span><span class="rule-text">أقصى مدة بقاء الرهينة قبل السرقة <strong>20 دقيقة</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">07</span><span class="rule-text">يمنع خطف العسكري أثناء الاستيقاف المروري أو إطلاق النار عليه</span></li>
+    <li class="law-rule-item"><span class="rule-num">08</span><span class="rule-text">يمنع خطف: <strong>المسعف، سائق التاكسي، سائق السطحة، موظفي المطاعم والورش</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">09</span><span class="rule-text">يمنع فعل عمل إجرامي أثناء وجودك في وظيفة أو استعمال مركبات الوظائف في الإجرام</span></li>
+    <li class="law-rule-item"><span class="rule-num">10</span><span class="rule-text">يمنع طلب هروب آمن لأكثر من <strong>10 دقائق</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">11</span><span class="rule-text">يمنع استخدام سيارات الشرطة أو الإسعاف في أي عمل إجرامي</span></li>
+    <li class="law-rule-item"><span class="rule-num">12</span><span class="rule-text">يمنع تنفيذ العمليات الإجرامية داخل المناطق الآمنة إلا بموافقة الإدارة</span></li>
+    <li class="law-rule-item"><span class="rule-num">13</span><span class="rule-text">يمنع المطالبة بطلبات غير واقعية أو غير ممكنة أثناء التفاوض</span></li>
+    <li class="law-rule-item"><span class="rule-num">14</span><span class="rule-text">يمنع السرقة بدون رهينة ما عدا <strong>سرقة البقالة والمنزل</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">15</span><span class="rule-text">يمنع الاعتداء على مفاوض الشرطة أو مفاوض المجرمين أثناء السيناريو</span></li>
+    <li class="law-rule-item"><span class="rule-num">16</span><span class="rule-text">يُسمح بطلب <strong>واحد فقط</strong> على كل رهينة</span></li>
+    <li class="law-rule-item"><span class="rule-num">17</span><span class="rule-text">في حال الإسقاط يمنع إعطاء كول أوت بأي طريقة كانت</span></li>
+    <li class="law-rule-item"><span class="rule-num">18</span><span class="rule-text">يمنع افتعال قتال بدون سبب واضح</span></li>
+    <li class="law-rule-item"><span class="rule-num">19</span><span class="rule-text">يمنع التهديد وأنت داخل مركبة أو دراجة أو بدون توجيه السلاح</span></li>
+  </ul>
+  <div class="rob-section">
+    <div class="rob-section-header"><div class="rob-section-title">عدد الأشخاص المسموح بهم في كل سرقة</div></div>
+    <table class="rob-table">
+      <tr><th>نوع السرقة</th><th>العدد المسموح</th></tr>
+      <tr><td>Store Robbery</td><td>1 – 3</td></tr>
+      <tr><td>House Robbery</td><td>2 – 3</td></tr>
+      <tr><td>Ammunition Store</td><td>2 – 4</td></tr>
+      <tr><td>Truck Robbery</td><td>3 – 5</td></tr>
+      <tr><td>Laundromat</td><td>4 – 6</td></tr>
+      <tr><td>Fleeca Bank</td><td>5 – 7</td></tr>
+      <tr><td>Cash Exchange</td><td>5 – 8</td></tr>
+      <tr><td>Blaine County</td><td>8 – 10</td></tr>
+      <tr><td>Maze Bank</td><td>8 – 12</td></tr>
+    </table>
+  </div>
+  </div></div>
+  <footer><div class="footer-brand"><img src="logo.png" alt="JC" onerror="this.src='800.gif'"><div class="footer-brand-text"><span class="footer-brand-name">Justice City RP</span></div></div><p>© 2026</p></footer>
+</div>
+
+<div id="page-police" class="page">
+  <div class="law-page-header">
+    <div class="law-page-deco">04</div>
+    <div class="law-page-header-inner">
+      <button class="back-btn" onclick="goHome()">◄ العودة للرئيسية</button>
+      <div class="law-page-icon-wrap"><span class="law-page-icon">🚔</span><span class="law-page-badge">Police Rules</span></div>
+      <h1 class="law-page-title">قوانين الشرطة</h1>
+      <p class="law-page-sub">بروتوكولات ومتطلبات أعضاء قوات الأمن والسلوك العسكري داخل مدينة العدالة</p>
+    </div>
+  </div>
+  <div class="law-page-body"><div class="law-page-body-inner"><ul class="law-rules-list">
+    <li class="law-rule-item"><span class="rule-num">01</span><span class="rule-text">احترام المواطنين والالتزام ببروتوكولات الراديو</span></li>
+    <li class="law-rule-item"><span class="rule-num">02</span><span class="rule-text">الامتثال لأوامر <strong>الرتب الأعلى</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">03</span><span class="rule-text">الالتزام بالسلوك العسكري وعدم الاستهزاء بالعمل</span></li>
+    <li class="law-rule-item"><span class="rule-num">04</span><span class="rule-text">يمنع طلب الترقية إلا في <strong>المحكمة العسكرية</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">05</span><span class="rule-text">الالتزام بالكود والاسم الرسمي في جميع الأوقات</span></li>
+    <li class="law-rule-item"><span class="rule-num">06</span><span class="rule-text">عدم صدم المجرمين عشوائياً</span></li>
+    <li class="law-rule-item"><span class="rule-num">07</span><span class="rule-text">حضور الاجتماعات <strong>إلزامي</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">08</span><span class="rule-text">يمنع تسريب المعلومات الوزارية</span></li>
+    <li class="law-rule-item"><span class="rule-num">09</span><span class="rule-text">إعلان الاستنفار من رتبة <strong>ملازم فما فوق</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">10</span><span class="rule-text">يمنع الكذب على المسؤولين</span></li>
+    <li class="law-rule-item"><span class="rule-num">11</span><span class="rule-text">يمنع استخدام الرتبة لأغراض غير مصرح بها</span></li>
+    <li class="law-rule-item"><span class="rule-num">12</span><span class="rule-text">يجب الالتزام بقوانين المحكمة في جميع الأحوال</span></li>
+    <li class="law-rule-item"><span class="rule-num">13</span><span class="rule-text">المستجد لا يخرج وحده إلا بعد الترقية إلى <strong>Solo Cadet</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">14</span><span class="rule-text">يمنع رفض تسليم البدلة أو العقوبات العسكرية</span></li>
+    <li class="law-rule-item"><span class="rule-num">15</span><span class="rule-text">يمنع تقديم رتبة بهدف تسريب معلومات تخص المجرمين أو العصابات</span></li>
+  </ul></div></div>
+  <footer><div class="footer-brand"><img src="logo.png" alt="JC" onerror="this.src='800.gif'"><div class="footer-brand-text"><span class="footer-brand-name">Justice City RP</span></div></div><p>© 2026</p></footer>
+</div>
+
+<div id="page-gangs" class="page">
+  <div class="law-page-header">
+    <div class="law-page-deco">05</div>
+    <div class="law-page-header-inner">
+      <button class="back-btn" onclick="goHome()">◄ العودة للرئيسية</button>
+      <div class="law-page-icon-wrap"><span class="law-page-icon">🗡</span><span class="law-page-badge">Gang Rules</span></div>
+      <h1 class="law-page-title">قوانين العصابات</h1>
+      <p class="law-page-sub">قواعد تأسيس العصابات وإدارتها وتنظيم العلاقات والعداوات بينها داخل المدينة</p>
+    </div>
+  </div>
+  <div class="law-page-body"><div class="law-page-body-inner"><ul class="law-rules-list">
+    <li class="law-rule-item"><span class="rule-num">01</span><span class="rule-text">عدد أفراد العصابة لا يقل عن <strong>8</strong> ولا يزيد عن <strong>25</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">02</span><span class="rule-text">تمنع الشخصنة بجميع أشكالها — <strong>عقوبتها باند نهائي</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">03</span><span class="rule-text">يمنع تقليد لبس عصابة أو نسب نفسك لعصابة ولست عضواً رسمياً</span></li>
+    <li class="law-rule-item"><span class="rule-num">04</span><span class="rule-text">العداوات بين العصابات تُعتمد من قبل <strong>المافيا</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">05</span><span class="rule-text">يجب الالتزام باللبس الرسمي أثناء أي عمل إجرامي ضد الشرطة أو عصابة أخرى</span></li>
+    <li class="law-rule-item"><span class="rule-num">06</span><span class="rule-text">يحق للعصابات الدفاع عن مقرهم في حال المداهمة العسكرية</span></li>
+    <li class="law-rule-item"><span class="rule-num">07</span><span class="rule-text">في حال كثرة المخالفات: <strong>تحذير ← إيقاف ← إقفال العصابة</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">08</span><span class="rule-text">يحق للشرطة مداهمة الأماكن التي يتم رصدها بعد إثبات الدلائل</span></li>
+    <li class="law-rule-item"><span class="rule-num">09</span><span class="rule-text">الاحترام الكامل لمسؤولي العصابات مهما كانت الظروف</span></li>
+    <li class="law-rule-item"><span class="rule-num">10</span><span class="rule-text">يمنع التلويت لأي عصابة في أي فايت غير رسمي بدون إذن المافيا</span></li>
+    <li class="law-rule-item"><span class="rule-num">11</span><span class="rule-text">كل عضو في العصابة يمثل العصابة بأكملها</span></li>
+    <li class="law-rule-item"><span class="rule-num">12</span><span class="rule-text">في حال غياب العصابة عن السيرفر سيتم <strong>استبعادها</strong></span></li>
+  </ul></div></div>
+  <footer><div class="footer-brand"><img src="logo.png" alt="JC" onerror="this.src='800.gif'"><div class="footer-brand-text"><span class="footer-brand-name">Justice City RP</span></div></div><p>© 2026</p></footer>
+</div>
+
+<div id="page-ems" class="page">
+  <div class="law-page-header">
+    <div class="law-page-deco">06</div>
+    <div class="law-page-header-inner">
+      <button class="back-btn" onclick="goHome()">◄ العودة للرئيسية</button>
+      <div class="law-page-icon-wrap"><span class="law-page-icon">🚑</span><span class="law-page-badge">EMS Rules</span></div>
+      <h1 class="law-page-title">قوانين الإسعاف</h1>
+      <p class="law-page-sub">لوائح وبروتوكولات عمل فريق الصحة والإسعاف ومعايير الرعاية الطبية داخل المدينة</p>
+    </div>
+  </div>
+  <div class="law-page-body"><div class="law-page-body-inner"><ul class="law-rules-list">
+    <li class="law-rule-item"><span class="rule-num">01</span><span class="rule-text">يجب احترام جميع المواطنين واللاعبين والعساكر</span></li>
+    <li class="law-rule-item"><span class="rule-num">02</span><span class="rule-text">الجدية في العمل وتقمص شخصية المسعف لأبعد حد بالتصرفات والأقوال</span></li>
+    <li class="law-rule-item"><span class="rule-num">03</span><span class="rule-text">الالتزام بالملابس والمركبات والمعدات الخاصة بـ<strong>رتبتك</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">04</span><span class="rule-text">يمنع إنعاش المواطن إذا كان سبب موته <strong>متفجر أو انتحار</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">05</span><span class="rule-text">يمنع منعاً باتاً إنعاش مسقط كلياً خارج المستشفى أو مسقط بطلق نار</span></li>
+    <li class="law-rule-item"><span class="rule-num">06</span><span class="rule-text">يمنع نقل المجرمين من موقع طلق النار إلا بوجود عسكري مرافق</span></li>
+    <li class="law-rule-item"><span class="rule-num">07</span><span class="rule-text">الالتزام بالقواعد المرورية: <strong>لا قطع إشارات، لا سرعة، لا تفحيط</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">08</span><span class="rule-text">يمنع توزيع معدات أو أدوية إسعافية للمواطنين أو العساكر — <strong>باند بيرم</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">09</span><span class="rule-text">يمنع تهريب المجرمين من الشرطة</span></li>
+    <li class="law-rule-item"><span class="rule-num">10</span><span class="rule-text">يمنع استخراج الهيلي <strong>بدون وينق</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">11</span><span class="rule-text">لا يُسمح بوظيفة أخرى مع وظيفة الصحة ويمنع الإجرام بشخصية المسعف</span></li>
+    <li class="law-rule-item"><span class="rule-num">12</span><span class="rule-text">في الحالات الجنائية تُرسل وحدتان فقط: <strong>EMS + Paramedic</strong></span></li>
+  </ul></div></div>
+  <footer><div class="footer-brand"><img src="logo.png" alt="JC" onerror="this.src='800.gif'"><div class="footer-brand-text"><span class="footer-brand-name">Justice City RP</span></div></div><p>© 2026</p></footer>
+</div>
+
+<div id="page-restaurants" class="page">
+  <div class="law-page-header">
+    <div class="law-page-deco">07</div>
+    <div class="law-page-header-inner">
+      <button class="back-btn" onclick="goHome()">◄ العودة للرئيسية</button>
+      <div class="law-page-icon-wrap"><span class="law-page-icon">🍽</span><span class="law-page-badge">Restaurant Rules</span></div>
+      <h1 class="law-page-title">المطاعم والورش</h1>
+      <p class="law-page-sub">قوانين التعامل مع موظفي المطاعم والورش وأماكن العمل المدنية داخل المدينة</p>
+    </div>
+  </div>
+  <div class="law-page-body"><div class="law-page-body-inner"><ul class="law-rules-list">
+    <li class="law-rule-item"><span class="rule-num">01</span><span class="rule-text">يجب احترام العاملين وعدم تقديم الإساءات أو الاستهزاء بهم</span></li>
+    <li class="law-rule-item"><span class="rule-num">02</span><span class="rule-text">يمنع إثارة الصخب أو المشاكل مع الموظفين أو المواطنين</span></li>
+    <li class="law-rule-item"><span class="rule-num">03</span><span class="rule-text">يمنع سرقة طعام الزبائن الآخرين</span></li>
+    <li class="law-rule-item"><span class="rule-num">04</span><span class="rule-text">يمنع تعطيل المركبات في الورشة أو محاولة تدميرها</span></li>
+    <li class="law-rule-item"><span class="rule-num">05</span><span class="rule-text">يمنع المجادلة في الأسعار في المطاعم والورش</span></li>
+    <li class="law-rule-item"><span class="rule-num">06</span><span class="rule-text">يمنع خطف الموظفين أثناء <strong>عملهم الرسمي</strong></span></li>
+    <li class="law-rule-item"><span class="rule-num">07</span><span class="rule-text">يمنع البيع خارج المطعم دون وجود عربة طعام خاصة</span></li>
+    <li class="law-rule-item"><span class="rule-num">08</span><span class="rule-text">يحق للعاملين إبلاغ الشرطة عند حدوث مشكلة وإيقاف البيع مؤقتاً</span></li>
+    <li class="law-rule-item"><span class="rule-num">09</span><span class="rule-text">يمنع المتاجرة بالوجبات بين المواطنين — الشراء من المطاعم فقط</span></li>
+    <li class="law-rule-item"><span class="rule-num">10</span><span class="rule-text">يجب البيع بالسعر الرسمي دون خصومات بدون شراكة رسمية مع جهة حكومية</span></li>
+  </ul></div></div>
+  <footer><div class="footer-brand"><img src="logo.png" alt="JC" onerror="this.src='800.gif'"><div class="footer-brand-text"><span class="footer-brand-name">Justice City RP</span></div></div><p>© 2026</p></footer>
+</div>
+
+<script>
+// WEBHOOK
+const WEBHOOK='https://discordapp.com/api/webhooks/1481696305758601348/szVYoZO5X5LADyWCWWOaeQUBAriuJFz3ubrOwL6ZrIpBYy1W4esL18fGYHHkKn_RZNZV';
+
+// PARTICLES
+(function(){
+  const canvas=document.getElementById('particles-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+  resize();window.addEventListener('resize',resize);
+  function mkPt(){return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.5,a:Math.random()*.6+.1}}
+  for(let i=0;i<60;i++)pts.push(mkPt());
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(192,57,43,${p.a})`;ctx.fill();
+    });
+    pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{
+      const d=Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(192,57,43,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}
+    })});
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// PAGE SYSTEM
+function openPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const el=document.getElementById(id);
+  if(el){el.classList.add('active');window.scrollTo({top:0,behavior:'instant'})}
+}
+function goHome(){openPage('page-home');setTimeout(initObs,120)}
+function scrollToId(id){setTimeout(()=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},70)}
+
+// NAVBAR
+const nb=document.getElementById('navbar');
+window.addEventListener('scroll',()=>nb.classList.toggle('solid',scrollY>60));
+
+// TOAST
+function showToast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+type;
+  requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>t.classList.remove('show'),4500);
+}
+
+// FORM
+async function submitForm(e){
+  e.preventDefault();
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;
+  btn.querySelector('.form-submit-text').textContent='⏳ جاري الإرسال...';
+  const fd=new FormData(e.target);
+  const d=Object.fromEntries(fd.entries());
+  const embed={
+    title:'⚖️ طلب انضمام جديد — Justice City RP',
+    color:0xC0392B,
+    timestamp:new Date().toISOString(),
+    thumbnail:{url:'https://cdn.discordapp.com/attachments/1419440733001089036/1479946238374838534/800.gif'},
+    fields:[
+      {name:'🎮 Discord ID',value:d.discord_id||'—',inline:true},
+      {name:'👤 الاسم والعمر',value:d.real_info||'—',inline:true},
+      {name:'\u200B',value:'\u200B',inline:false},
+      {name:'🎭 معلومات الشخصية',value:d.char_info||'—',inline:false},
+      {name:'📖 قصة الشخصية',value:(d.char_story||'لم يذكر').substring(0,1024),inline:false},
+      {name:'⚡ الإيجابيات والسلبيات',value:(d.char_traits||'—').substring(0,1024),inline:false},
+      {name:'🕹️ خبرة الرول بلاي',value:(d.rp_exp||'—').substring(0,1024),inline:false},
+      {name:'💡 سبب الانضمام',value:(d.join_reason||'—').substring(0,1024),inline:false},
+      {name:'🔴 الموقف الأول',value:(d.situation_1||'—').substring(0,1024),inline:false},
+      {name:'🔴 الموقف الثاني',value:(d.situation_2||'—').substring(0,1024),inline:false},
+      {name:'🔴 الموقف الثالث',value:(d.situation_3||'—').substring(0,1024),inline:false},
+      {name:'🔴 الموقف الرابع',value:(d.situation_4||'—').substring(0,1024),inline:false},
+    ],
+    footer:{text:'Justice City RP | مدينة العدالة • 2026'}
+  };
+  try{
+    const res=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'⚖️ Justice City RP',embeds:[embed]})});
+    if(res.ok||res.status===204){
+      showToast('✅ تم إرسال طلبك بنجاح! سيتم مراجعته خلال 24-48 ساعة','success');
+      e.target.reset();setTimeout(goHome,2800);
+    } else throw new Error(res.status);
+  } catch(err){
+    showToast('❌ حدث خطأ في الإرسال، تحقق من اتصالك وحاول مجدداً','error');
+  } finally{
+    btn.disabled=false;
+    btn.querySelector('.form-submit-text').textContent='⚡ إرسال الطلب';
+  }
+}
+
+// FADE OBSERVER
+function initObs(){
+  const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.1});
+  document.querySelectorAll('.fade-up').forEach(el=>{el.classList.remove('visible');obs.observe(el)});
+}
+initObs();
+</script>
+</body>
+</html>
