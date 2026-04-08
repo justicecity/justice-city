@@ -972,10 +972,10 @@ function startWithMusic(){
   overlay.classList.add('hide');
   setTimeout(()=>overlay.style.display='none',700);
   musicBtn.classList.add('visible');
-  audio.volume=0.5;
+  audio.volume=0.1;
   audio.play().then(()=>{
     musicPlaying=true;
-    fadeIn(audio,0.5);
+    fadeIn(audio,0.1);
   }).catch(()=>{musicPlaying=false});
 }
 
