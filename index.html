@@ -972,10 +972,10 @@ function startWithMusic(){
   overlay.classList.add('hide');
   setTimeout(()=>overlay.style.display='none',700);
   musicBtn.classList.add('visible');
-  audio.volume=0.45;
+  audio.volume=0.5;
   audio.play().then(()=>{
     musicPlaying=true;
-    fadeIn(audio,0.45);
+    fadeIn(audio,0.5);
   }).catch(()=>{musicPlaying=false});
 }
 
@@ -1002,7 +1002,7 @@ function toggleMusic(){
     musicLabel.textContent='MUSIC OFF';
   } else {
     audio.play();
-    fadeIn(audio,0.45);
+    fadeIn(audio,0.5);
     musicPlaying=true;
     musicIcon.classList.remove('paused');
     musicLabel.textContent='MUSIC ON';
